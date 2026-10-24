@@ -1,0 +1,56 @@
+{
+  "aktualisiert": "2026-10-24T10:00",
+  "jahreszeiten": {
+    "sommer": [4, 5, 6, 7, 8, 9],
+    "uebergang": [3, 10],
+    "winter": [11, 12, 1, 2]
+  },
+  "pflanzen": [
+    {
+      "id": "pilea",
+      "name": "Ufopflanze",
+      "botanisch": "Pilea peperomioides",
+      "foto": "foto-pilea.jpg",
+      "emoji": "🪴",
+      "standort": "ca. 2,5 m vom Westfenster",
+      "topf": "Kleiner Topf in Übertopf",
+      "intervallTage": { "sommer": 7, "uebergang": 10, "winter": 14 },
+      "kurztipp": "Fingerprobe: Sind die oberen 2 cm trocken? Dann gießen und den Übertopf nach 15 Minuten leeren.",
+      "pflegetipps": [
+        "Erst gießen, wenn die oberen 2 cm Erde trocken sind. Lieber zu wenig als zu viel.",
+        "Wasser, das nach 15 Minuten im Übertopf steht, wegschütten. Nasse Füße lassen die Wurzeln faulen.",
+        "2,5 m vom Fenster ist für sie recht dunkel. Näher ans Fenster (ca. 1 m) macht sie kompakter und kräftiger. Westsonne verträgt sie gut.",
+        "Einmal pro Woche um eine Vierteldrehung drehen, sonst wächst sie schief zum Licht.",
+        "Im Winter kaum wachsen lassen: kein Dünger von November bis Februar."
+      ],
+      "zuletztGegossen": null,
+      "zuletztGegossenQuelle": null,
+      "naechstesGiessen": "2026-10-24",
+      "heuteFaellig": null,
+      "verlauf": []
+    },
+    {
+      "id": "alocasia",
+      "name": "Elefantenohr",
+      "botanisch": "Alocasia",
+      "foto": "foto-alocasia.jpg",
+      "emoji": "🌿",
+      "standort": "ca. 2,5 m vom Westfenster",
+      "topf": "Mittelgroß, Topf in weißem Übertopf",
+      "intervallTage": { "sommer": 6, "uebergang": 8, "winter": 12 },
+      "kurztipp": "Fingerprobe: Oberste 2–3 cm trocken? Dann durchdringend gießen und den Übertopf nach 15 Minuten leeren.",
+      "pflegetipps": [
+        "Mag gleichmäßig leicht feuchte Erde, aber nie Staunässe. Vor dem Gießen Fingerprobe machen.",
+        "Übertopf nach 15 Minuten kontrollieren und stehendes Wasser wegschütten. Das ist bei Alocasia die häufigste Todesursache.",
+        "Braucht viel helles, indirektes Licht. Näher ans Fenster stellen, im Sommer aber pralle Nachmittagssonne meiden (Vorhang).",
+        "Warm halten (über 18 °C), keine kalte Zugluft. Trockene Heizungsluft mag sie nicht: ab und zu besprühen oder eine Schale Wasser daneben.",
+        "Im Winter kann sie ein, zwei alte Blätter verlieren. Das ist normal. Dann noch sparsamer gießen."
+      ],
+      "zuletztGegossen": null,
+      "zuletztGegossenQuelle": null,
+      "naechstesGiessen": "2026-10-24",
+      "heuteFaellig": null,
+      "verlauf": []
+    }
+  ]
+}
