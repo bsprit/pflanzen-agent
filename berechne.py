@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Rechnet aus, welche Pflanze heute gegossen werden muss.
 
-Aktualisiert pflanzen.json und schreibt ntfy.json, wenn heute etwas zu tun ist.
-Ist nichts fällig, gibt es keine ntfy.json (und damit keinen Push).
+Aktualisiert pflanzen.json und schreibt den Text für den Push in ntfy.txt,
+wenn heute etwas zu tun ist. Ist nichts fällig, gibt es keine ntfy.txt
+(und damit keinen Push).
 
 Version 1 nimmt an, dass am Tag der Erinnerung gegossen wird
 (zuletztGegossenQuelle = "angenommen"). In Version 2 trägt der
@@ -14,11 +15,10 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 SEITE = "https://bsprit.github.io/pflanzen-agent/"
-NTFY_TOPIC = "pflanzen-fg4k54sgxx"
 
 ORDNER = Path(__file__).resolve().parent
 DATEN = ORDNER / "pflanzen.json"
-NACHRICHT = ORDNER / "ntfy.json"
+NACHRICHT = ORDNER / "ntfy.txt"
 
 
 def jahreszeit(daten, tag):
@@ -65,19 +65,12 @@ def main():
         print(f"{heute} ({saison}): nichts fällig, kein Push.")
         return
 
-    zeilen = []
+    zeilen = ["Heute gießen: " + ", ".join(p["name"] for p in faellig)]
     for p in faellig:
         naechstes = date.fromisoformat(p["naechstesGiessen"]).strftime("%d.%m.")
         zeilen.append(f"{p['emoji']} {p['name']}: {p['kurztipp']} (Danach wieder ca. am {naechstes})")
-    nachricht = {
-        "topic": NTFY_TOPIC,
-        "title": "Heute gießen: " + ", ".join(p["name"] for p in faellig),
-        "message": "\n\n".join(zeilen),
-        "tags": ["seedling"],
-        "click": SEITE,
-        "actions": [{"action": "view", "label": "Seite öffnen", "url": SEITE}],
-    }
-    NACHRICHT.write_text(json.dumps(nachricht, ensure_ascii=False, indent=2), encoding="utf-8")
+    zeilen.append(SEITE)
+    NACHRICHT.write_text("\n\n".join(zeilen), encoding="utf-8")
     print(f"{heute} ({saison}): fällig: " + ", ".join(p["name"] for p in faellig))
 
 
