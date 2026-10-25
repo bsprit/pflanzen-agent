@@ -78,7 +78,24 @@
   .aufgabe .symbol { font-size: 26px; line-height: 1; }
   .aufgabe strong { display: block; }
   .aufgabe span { font-size: 14px; opacity: .92; }
-  .aufgabe .aktionen:empty { display: none; }
+  .aktionen { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .aktionen:empty { display: none; }
+  .knopf {
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 13px;
+    cursor: pointer;
+    background: #fff;
+    color: #1f4a35;
+  }
+  .knopf.leise { background: rgba(255, 255, 255, .22); color: inherit; }
+  .knopf:disabled { opacity: .6; cursor: default; }
+  .karte .knopf { background: var(--accent-soft); color: var(--accent); padding: 7px 14px; font-size: 14px; }
+  .notiert { font-size: 14px; font-weight: 600; }
+  .karte .aktionen { margin-top: 12px; }
 
   .abschnitt { font-size: 20px; margin: 0 4px 12px; }
   .karte {
@@ -177,20 +194,55 @@
     return Object.keys(daten.jahreszeiten).find(n => daten.jahreszeiten[n].includes(monat)) || "sommer";
   }
 
-  const istHeuteDran = p => p.heuteFaellig === heuteIso || p.naechstesGiessen <= heuteIso;
+  const istHeuteDran = p => !!p.offen || p.naechstesGiessen <= heuteIso;
+
+  // Knopfdrücke gehen an ein ntfy-Topic. Der Agent trägt sie beim nächsten Lauf (alle 6 Stunden) ein.
+  const ANTWORT_TOPIC = "https://ntfy.sh/pflanzen-fg4k54sgxx-antwort";
+  const NOTIERT_TEXT = { gegossen: "✓ Gegossen notiert", feucht: "✓ Notiert, ich erinnere dich morgen" };
+  const merkKey = id => `antwort:${id}:${heuteIso}`;
+  function gemerkt(id) {
+    try { return localStorage.getItem(merkKey(id)); } catch (e) { return null; }
+  }
+  function merke(id, aktion) {
+    try { localStorage.setItem(merkKey(id), aktion); } catch (e) {}
+  }
+
+  function knoepfe(p, mitFeucht) {
+    const schon = gemerkt(p.id);
+    if (schon) return `<span class="notiert">${NOTIERT_TEXT[schon]}</span>`;
+    return `<button class="knopf" data-aktion="gegossen" data-id="${esc(p.id)}">${mitFeucht ? "Gegossen ✓" : "Heute gegossen"}</button>` +
+      (mitFeucht ? `<button class="knopf leise" data-aktion="feucht" data-id="${esc(p.id)}">Noch feucht</button>` : "");
+  }
+
+  document.addEventListener("click", async e => {
+    const knopf = e.target.closest("[data-aktion]");
+    if (!knopf) return;
+    const { aktion, id } = knopf.dataset;
+    const leiste = knopf.parentElement;
+    leiste.querySelectorAll("button").forEach(b => b.disabled = true);
+    try {
+      const antwort = await fetch(ANTWORT_TOPIC, { method: "POST", body: `${aktion}:${id}` });
+      if (!antwort.ok) throw new Error(antwort.status);
+      merke(id, aktion);
+      document.querySelectorAll(`.aktionen[data-fuer="${id}"]`).forEach(el =>
+        el.innerHTML = `<span class="notiert">${NOTIERT_TEXT[aktion]}</span>`);
+    } catch (err) {
+      leiste.querySelectorAll("button").forEach(b => b.disabled = false);
+      alert("Das hat nicht geklappt. Bitte nochmal tippen.");
+    }
+  });
 
   function zeigeHeute(daten) {
     const el = document.getElementById("heute");
     const dran = daten.pflanzen.filter(istHeuteDran);
     if (dran.length) {
-      // .aktionen bleibt in Version 1 leer. Version 2 setzt hier den "Gegossen"-Knopf ein.
       el.innerHTML = `<h2>Heute zu tun</h2>` + dran.map(p => `
-        <div class="aufgabe" data-id="${esc(p.id)}">
+        <div class="aufgabe">
           <div class="symbol">💧</div>
           <div>
-            <strong>${esc(p.name)} gießen</strong>
+            <strong>${esc(p.name)} gießen${p.offen && p.offen.erinnerungen > 1 ? " (2. Erinnerung)" : ""}</strong>
             <span>${esc(p.kurztipp)}</span>
-            <div class="aktionen"></div>
+            <div class="aktionen" data-fuer="${esc(p.id)}">${knoepfe(p, true)}</div>
           </div>
         </div>`).join("");
       return;
@@ -223,8 +275,9 @@
           <div class="werte">
             <div class="wert"><small>Zuletzt gegossen</small>${zuletzt}</div>
             <div class="wert ${dran ? "faellig" : ""}"><small>Nächstes Gießen</small>
-              <b>${datumLang(p.naechstesGiessen)}</b><span>${relativ(p.naechstesGiessen)}</span></div>
+              <b>${datumLang(p.naechstesGiessen)}</b><span>${relativ(p.naechstesGiessen)}${p.grund === "noch feucht" ? " · nochmal prüfen" : ""}</span></div>
           </div>
+          <div class="aktionen" data-fuer="${esc(p.id)}">${knoepfe(p, dran)}</div>
           <p class="rhythmus">${SAISON_NAME[s]}-Rhythmus: etwa alle ${p.intervallTage[s]} Tage, immer erst Fingerprobe.</p>
           <details>
             <summary>Pflegetipps</summary>
