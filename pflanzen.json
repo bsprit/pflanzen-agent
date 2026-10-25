@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-10-25T08:06",
+  "aktualisiert": "2026-10-25T18:08",
   "jahreszeiten": {
     "sommer": [
       4,
@@ -45,13 +45,14 @@
       "zuletztGegossen": "2026-10-24",
       "zuletztGegossenQuelle": "angenommen",
       "naechstesGiessen": "2026-11-03",
-      "heuteFaellig": null,
       "verlauf": [
         {
           "datum": "2026-10-24",
           "quelle": "angenommen"
         }
-      ]
+      ],
+      "offen": null,
+      "grund": "rhythmus"
     },
     {
       "id": "alocasia",
@@ -77,13 +78,15 @@
       "zuletztGegossen": "2026-10-24",
       "zuletztGegossenQuelle": "angenommen",
       "naechstesGiessen": "2026-11-01",
-      "heuteFaellig": null,
       "verlauf": [
         {
           "datum": "2026-10-24",
           "quelle": "angenommen"
         }
-      ]
+      ],
+      "offen": null,
+      "grund": "rhythmus"
     }
-  ]
+  ],
+  "letzteAntwort": 0
 }
