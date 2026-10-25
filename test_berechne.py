@@ -64,16 +64,34 @@ class Tests(unittest.TestCase):
         self.assertEqual(p["zuletztGegossenQuelle"], "bestaetigt")
         self.assertEqual(p["naechstesGiessen"], "2026-11-25")
 
-    def test_noch_feucht_erinnert_morgen_wieder(self):
+    def test_noch_feucht_verschiebt_im_winter_um_4_tage_und_lernt(self):
         d = daten()
         verarbeite(d, [], um("2026-11-13"), morgens=True)
         verarbeite(d, [antwort("feucht:pilea", "2026-11-13")], um("2026-11-13", 14), morgens=False)
         p = d["pflanzen"][0]
         self.assertIsNone(p["offen"])
-        self.assertEqual(p["naechstesGiessen"], "2026-11-14")
-        erinnern = verarbeite(d, [], um("2026-11-14"), morgens=True)
-        self.assertEqual(len(erinnern), 1)
+        self.assertEqual(p["naechstesGiessen"], "2026-11-17")
+        self.assertEqual(p["intervallTage"]["winter"], 13)
+        self.assertEqual(verarbeite(d, [], um("2026-11-16"), morgens=True), [])
+        self.assertEqual(len(verarbeite(d, [], um("2026-11-17"), morgens=True)), 1)
         self.assertEqual(p["offen"]["erinnerungen"], 1)
+        # Danach gilt der gelernte Abstand.
+        verarbeite(d, [antwort("gegossen:pilea", "2026-11-17")], um("2026-11-17", 14), morgens=False)
+        self.assertEqual(p["naechstesGiessen"], "2026-11-30")
+
+    def test_noch_feucht_im_sommer_2_tage(self):
+        d = daten(zuletzt="2026-06-01", naechstes="2026-06-08")
+        verarbeite(d, [antwort("feucht:pilea", "2026-06-08")], um("2026-06-08", 14), morgens=False)
+        p = d["pflanzen"][0]
+        self.assertEqual(p["naechstesGiessen"], "2026-06-10")
+        self.assertEqual(p["intervallTage"]["sommer"], 8)
+        self.assertEqual(p["intervallTage"]["winter"], 12)
+
+    def test_gelernter_abstand_hat_obergrenze(self):
+        d = daten()
+        d["pflanzen"][0]["intervallTage"]["winter"] = 30
+        verarbeite(d, [antwort("feucht:pilea", "2026-11-13")], um("2026-11-13", 14), morgens=False)
+        self.assertEqual(d["pflanzen"][0]["intervallTage"]["winter"], 30)
 
     def test_ohne_antwort_zweite_erinnerung_dann_angenommen(self):
         d = daten()

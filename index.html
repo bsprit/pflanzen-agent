@@ -198,7 +198,7 @@
 
   // Knopfdrücke gehen an ein ntfy-Topic. Der Agent trägt sie beim nächsten Lauf (alle 6 Stunden) ein.
   const ANTWORT_TOPIC = "https://ntfy.sh/pflanzen-fg4k54sgxx-antwort";
-  const NOTIERT_TEXT = { gegossen: "✓ Gegossen notiert", feucht: "✓ Notiert, ich erinnere dich morgen" };
+  const NOTIERT_TEXT = { gegossen: "✓ Gegossen notiert", feucht: "✓ Notiert, ich erinnere dich in ein paar Tagen" };
   const merkKey = id => `antwort:${id}:${heuteIso}`;
   function gemerkt(id) {
     try { return localStorage.getItem(merkKey(id)); } catch (e) { return null; }

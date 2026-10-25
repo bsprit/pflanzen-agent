@@ -13,7 +13,9 @@ Erinnert wird nur beim Morgenlauf (6 bis 10 Uhr Berliner Zeit, oder mit
 
 Regeln:
 - "Gegossen": zuletztGegossen ist der Tag des Knopfdrucks.
-- "Noch feucht": morgen wieder erinnern.
+- "Noch feucht": je nach Jahreszeit in 2 bis 4 Tagen wieder erinnern. Außerdem
+  wird der Gießabstand dieser Pflanze für die aktuelle Jahreszeit dauerhaft um
+  einen Tag länger, so lernt der Agent den richtigen Rhythmus.
 - Keine Antwort: am nächsten Morgen noch einmal erinnern. Kommt wieder
   nichts, gilt die Pflanze am Tag der zweiten Erinnerung als gegossen.
 """
@@ -28,6 +30,8 @@ ZONE = ZoneInfo("Europe/Berlin")
 SEITE = "https://bsprit.github.io/pflanzen-agent/"
 ANTWORT_TOPIC = "https://ntfy.sh/pflanzen-fg4k54sgxx-antwort"
 MORGEN_STUNDEN = range(6, 11)
+FEUCHT_VERSCHIEBEN = {"sommer": 2, "uebergang": 3, "winter": 4}  # Tage bis zur nächsten Erinnerung
+MAX_ABSTAND = 30  # Länger lernt der Agent den Abstand nie
 
 ORDNER = Path(__file__).resolve().parent
 DATEN = ORDNER / "pflanzen.json"
@@ -82,10 +86,14 @@ def verarbeite(daten, antworten, jetzt, morgens):
         if aktion == "gegossen":
             gegossen(p, tag, "bestaetigt")
         elif aktion == "feucht":
+            saison = jahreszeit(daten, tag)
+            alt = p["intervallTage"][saison]
+            p["intervallTage"][saison] = min(alt + 1, MAX_ABSTAND)
             p["offen"] = None
             p["grund"] = "noch feucht"
-            p["naechstesGiessen"] = (tag + timedelta(days=1)).isoformat()
-            p["verlauf"].append({"datum": tag.isoformat(), "quelle": "noch feucht"})
+            p["naechstesGiessen"] = (tag + timedelta(days=FEUCHT_VERSCHIEBEN[saison])).isoformat()
+            p["verlauf"].append({"datum": tag.isoformat(), "quelle": "noch feucht",
+                                 "abstand": f"{alt} → {p['intervallTage'][saison]} Tage ({saison})"})
     daten["letzteAntwort"] = letzte
 
     erinnern = []
