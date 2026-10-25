@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-10-24T10:31",
+  "aktualisiert": "2026-10-25T08:06",
   "jahreszeiten": {
     "sommer": [
       4,
@@ -45,7 +45,7 @@
       "zuletztGegossen": "2026-10-24",
       "zuletztGegossenQuelle": "angenommen",
       "naechstesGiessen": "2026-11-03",
-      "heuteFaellig": "2026-10-24",
+      "heuteFaellig": null,
       "verlauf": [
         {
           "datum": "2026-10-24",
@@ -77,7 +77,7 @@
       "zuletztGegossen": "2026-10-24",
       "zuletztGegossenQuelle": "angenommen",
       "naechstesGiessen": "2026-11-01",
-      "heuteFaellig": "2026-10-24",
+      "heuteFaellig": null,
       "verlauf": [
         {
           "datum": "2026-10-24",
