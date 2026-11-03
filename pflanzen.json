@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-11-03T08:13",
+  "aktualisiert": "2026-11-03T14:17",
   "jahreszeiten": {
     "sommer": [
       4,
@@ -75,18 +75,22 @@
         "Warm halten (über 18 °C), keine kalte Zugluft. Trockene Heizungsluft mag sie nicht: ab und zu besprühen oder eine Schale Wasser daneben.",
         "Im Winter kann sie ein, zwei alte Blätter verlieren. Das ist normal. Dann noch sparsamer gießen."
       ],
-      "zuletztGegossen": "2026-10-24",
-      "zuletztGegossenQuelle": "angenommen",
-      "naechstesGiessen": "2026-11-05",
+      "zuletztGegossen": "2026-11-03",
+      "zuletztGegossenQuelle": "bestaetigt",
+      "naechstesGiessen": "2026-11-15",
       "verlauf": [
         {
           "datum": "2026-10-24",
           "quelle": "angenommen"
+        },
+        {
+          "datum": "2026-11-03",
+          "quelle": "bestaetigt"
         }
       ],
       "offen": null,
       "grund": "rhythmus"
     }
   ],
-  "letzteAntwort": 0
+  "letzteAntwort": 1793695364
 }
