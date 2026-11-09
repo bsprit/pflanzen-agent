@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-11-08T08:13",
+  "aktualisiert": "2026-11-09T14:20",
   "jahreszeiten": {
     "sommer": [
       4,
@@ -32,7 +32,7 @@
       "intervallTage": {
         "sommer": 7,
         "uebergang": 10,
-        "winter": 14
+        "winter": 15
       },
       "kurztipp": "Fingerprobe: Sind die oberen 2 cm trocken? Dann gießen und den Übertopf nach 15 Minuten leeren.",
       "pflegetipps": [
@@ -42,20 +42,29 @@
         "Einmal pro Woche um eine Vierteldrehung drehen, sonst wächst sie schief zum Licht.",
         "Im Winter kaum wachsen lassen: kein Dünger von November bis Februar."
       ],
-      "zuletztGegossen": "2026-10-24",
-      "zuletztGegossenQuelle": "angenommen",
-      "naechstesGiessen": "2026-11-07",
+      "zuletztGegossen": "2026-11-09",
+      "zuletztGegossenQuelle": "bestaetigt",
+      "naechstesGiessen": "2026-11-24",
       "verlauf": [
         {
           "datum": "2026-10-24",
           "quelle": "angenommen"
+        },
+        {
+          "datum": "2026-11-09",
+          "quelle": "bestaetigt"
+        },
+        {
+          "datum": "2026-11-09",
+          "quelle": "noch feucht",
+          "abstand": "14 → 15 Tage (winter)"
+        },
+        {
+          "datum": "2026-11-09",
+          "quelle": "bestaetigt"
         }
       ],
-      "offen": {
-        "seit": "2026-11-08",
-        "zuletztErinnert": "2026-11-08",
-        "erinnerungen": 1
-      },
+      "offen": null,
       "grund": "rhythmus"
     },
     {
@@ -96,5 +105,5 @@
       "grund": "rhythmus"
     }
   ],
-  "letzteAntwort": 1793695364
+  "letzteAntwort": 1794228977
 }
