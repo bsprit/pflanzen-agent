@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-11-23T08:14",
+  "aktualisiert": "2026-11-24T08:12",
   "jahreszeiten": {
     "sommer": [
       4,
@@ -64,7 +64,11 @@
           "quelle": "bestaetigt"
         }
       ],
-      "offen": null,
+      "offen": {
+        "seit": "2026-11-24",
+        "zuletztErinnert": "2026-11-24",
+        "erinnerungen": 1
+      },
       "grund": "rhythmus"
     },
     {
