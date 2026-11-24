@@ -4,9 +4,9 @@
 Aufruf: python3 berechne.py [--morgen]
 
 Liest pflanzen.json und, falls vorhanden, antworten.jsonl: die Knopfdrücke
-"Gegossen" und "Noch feucht" aus dem ntfy-Antwort-Topic. Schreibt
-pflanzen.json zurück und legt für jede Erinnerung im Ordner ntfy/ drei
-Dateien an: <id>.txt (Text), <id>.titel und <id>.aktionen (ntfy-Knöpfe).
+"Gegossen" und "Noch feucht" von der Webseite (über das ntfy-Antwort-Topic). Schreibt
+pflanzen.json zurück und gibt am Ende die fertige Push-Nachricht aus
+(zwischen den Zeilen ---NACHRICHT--- und ---ENDE---), falls erinnert wird.
 
 Erinnert wird nur beim Morgenlauf (6 bis 10 Uhr Berliner Zeit, oder mit
 --morgen). Die anderen Läufe tragen nur Knopfdrücke ein.
@@ -20,7 +20,6 @@ Regeln:
   nichts, gilt die Pflanze am Tag der zweiten Erinnerung als gegossen.
 """
 import json
-import shutil
 import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -36,10 +35,6 @@ MAX_ABSTAND = 30  # Länger lernt der Agent den Abstand nie
 ORDNER = Path(__file__).resolve().parent
 DATEN = ORDNER / "pflanzen.json"
 ANTWORTEN = ORDNER / "antworten.jsonl"
-NTFY = ORDNER / "ntfy"
-
-UMLAUTE = str.maketrans({"ä": "ae", "ö": "oe", "ü": "ue", "Ä": "Ae", "Ö": "Oe", "Ü": "Ue", "ß": "ss"})
-
 
 def jahreszeit(daten, tag):
     for name, monate in daten["jahreszeiten"].items():
@@ -132,18 +127,15 @@ def lies_antworten():
     return antworten
 
 
-def schreibe_erinnerung(p):
-    text = f"{p['emoji']} {p['kurztipp']}"
-    if p["offen"]["erinnerungen"] > 1:
-        text += "\n\nZweite Erinnerung. Ohne Antwort zähle ich sie morgen als gegossen."
-    titel = f"{p['name']} giessen".translate(UMLAUTE).encode("ascii", "ignore").decode()
-    aktionen = (
-        f"http, Gegossen, {ANTWORT_TOPIC}, body=gegossen:{p['id']}, clear=true; "
-        f"http, Noch feucht, {ANTWORT_TOPIC}, body=feucht:{p['id']}, clear=true"
-    )
-    (NTFY / f"{p['id']}.txt").write_text(text, encoding="utf-8")
-    (NTFY / f"{p['id']}.titel").write_text(titel, encoding="utf-8")
-    (NTFY / f"{p['id']}.aktionen").write_text(aktionen, encoding="utf-8")
+def nachricht(erinnern):
+    zeilen = ["🌱 Heute gießen: " + ", ".join(p["name"] for p in erinnern), ""]
+    for p in erinnern:
+        zeilen.append(f"{p['emoji']} {p['name']}: {p['kurztipp']}")
+        if p["offen"]["erinnerungen"] > 1:
+            zeilen.append("Zweite Erinnerung. Ohne Antwort zähle ich sie morgen als gegossen.")
+        zeilen.append("")
+    zeilen.append(f"Erledigt? Auf der Seite abhaken: {SEITE}")
+    return "\n".join(zeilen)
 
 
 def main():
@@ -158,15 +150,13 @@ def main():
         daten["aktualisiert"] = jetzt.strftime("%Y-%m-%dT%H:%M")
         DATEN.write_text(json.dumps(daten, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    shutil.rmtree(NTFY, ignore_errors=True)
-    if erinnern:
-        NTFY.mkdir()
-        for p in erinnern:
-            schreibe_erinnerung(p)
-
     lauf = "Morgenlauf" if morgens else "Zwischenlauf"
     namen = ", ".join(p["name"] for p in erinnern) or "keine"
     print(f"{jetzt:%Y-%m-%d %H:%M} {lauf}: Erinnerungen: {namen}")
+    if erinnern:
+        print("---NACHRICHT---")
+        print(nachricht(erinnern))
+        print("---ENDE---")
 
 
 if __name__ == "__main__":

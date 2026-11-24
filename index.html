@@ -196,7 +196,7 @@
 
   const istHeuteDran = p => !!p.offen || p.naechstesGiessen <= heuteIso;
 
-  // Knopfdrücke gehen an ein ntfy-Topic. Der Agent trägt sie beim nächsten Lauf (alle 6 Stunden) ein.
+  // Knopfdrücke gehen an ein ntfy-Topic. Der Agent trägt sie beim nächsten Lauf (morgens und abends) ein.
   const ANTWORT_TOPIC = "https://ntfy.sh/pflanzen-fg4k54sgxx-antwort";
   const NOTIERT_TEXT = { gegossen: "✓ Gegossen notiert", feucht: "✓ Notiert, ich erinnere dich in ein paar Tagen" };
   const merkKey = id => `antwort:${id}:${heuteIso}`;
