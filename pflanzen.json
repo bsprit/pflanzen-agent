@@ -1,5 +1,5 @@
 {
-  "aktualisiert": "2026-11-24T08:12",
+  "aktualisiert": "2026-11-24T14:17",
   "jahreszeiten": {
     "sommer": [
       4,
@@ -42,9 +42,9 @@
         "Einmal pro Woche um eine Vierteldrehung drehen, sonst wächst sie schief zum Licht.",
         "Im Winter kaum wachsen lassen: kein Dünger von November bis Februar."
       ],
-      "zuletztGegossen": "2026-11-09",
+      "zuletztGegossen": "2026-11-24",
       "zuletztGegossenQuelle": "bestaetigt",
-      "naechstesGiessen": "2026-11-24",
+      "naechstesGiessen": "2026-12-09",
       "verlauf": [
         {
           "datum": "2026-10-24",
@@ -62,13 +62,13 @@
         {
           "datum": "2026-11-09",
           "quelle": "bestaetigt"
+        },
+        {
+          "datum": "2026-11-24",
+          "quelle": "bestaetigt"
         }
       ],
-      "offen": {
-        "seit": "2026-11-24",
-        "zuletztErinnert": "2026-11-24",
-        "erinnerungen": 1
-      },
+      "offen": null,
       "grund": "rhythmus"
     },
     {
@@ -92,9 +92,9 @@
         "Warm halten (über 18 °C), keine kalte Zugluft. Trockene Heizungsluft mag sie nicht: ab und zu besprühen oder eine Schale Wasser daneben.",
         "Im Winter kann sie ein, zwei alte Blätter verlieren. Das ist normal. Dann noch sparsamer gießen."
       ],
-      "zuletztGegossen": "2026-11-15",
+      "zuletztGegossen": "2026-11-24",
       "zuletztGegossenQuelle": "bestaetigt",
-      "naechstesGiessen": "2026-11-27",
+      "naechstesGiessen": "2026-12-06",
       "verlauf": [
         {
           "datum": "2026-10-24",
@@ -107,11 +107,15 @@
         {
           "datum": "2026-11-15",
           "quelle": "bestaetigt"
+        },
+        {
+          "datum": "2026-11-24",
+          "quelle": "bestaetigt"
         }
       ],
       "offen": null,
       "grund": "rhythmus"
     }
   ],
-  "letzteAntwort": 1794726830
+  "letzteAntwort": 1795507278
 }
